@@ -305,6 +305,7 @@ public struct CachedAsyncImage<Content>: View where Content: View {
         self._phase = State(wrappedValue: .empty)
         do {
             if let urlRequest = urlRequest, let image = try cachedImage(from: urlRequest, cache: urlCache) {
+                let _ = print("XXXX cache hit 2")
                 self._phase = State(wrappedValue: .success(image))
             }
         } catch {
@@ -319,6 +320,7 @@ public struct CachedAsyncImage<Content>: View where Content: View {
                 let (image, metrics) = try await remoteImage(from: urlRequest, session: urlSession)
                 if metrics.transactionMetrics.last?.resourceFetchType == .localCache {
                     // WARNING: This does not behave well when the url is changed with another
+                    let _ = print("XXXX cache hit 3")
                     phase = .success(image)
                 } else {
                     withAnimation(transaction.animation) {
